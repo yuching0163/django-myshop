@@ -1,0 +1,14 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+    註冊介面
+{% endblock %}
+{% block content %}
+    <br>
+    <h2>會員註冊</h2>
+    <form method='POST'>
+      {% csrf_token %}
+      {{ form.as_p }}
+    <input type="submit" value="save" />
+    </form>
+{% endblock %}

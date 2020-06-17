@@ -1,0 +1,58 @@
+{% extends 'shop/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    Your shopping cart
+{% endblock %}
+
+{% block content %}
+    <h1>購物車內容</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>圖片</th>
+            <th>產品名稱</th>
+            <th>售價</th>
+            <th>數量</th>
+            <th>總共</th>
+            <th>刪除</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+                <tr>
+                    <td width="10%">
+                        <a href="{{ product.get_absolute_url }}">
+                            <img src="
+                                    {% if product.image %}{{ product.image.url }}{% else %}
+                                    {% static 'img/no_image.png' %}{% endif %}" alt="" class="img-fluid">
+                        </a>
+                    </td>
+                    <td>{{ product.name }}</td>
+                    <td>${{ item.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.total_price }}</td>
+                    <td>
+                        <a href="{% url 'cart:cart_remove' product.id %}">刪除</a>
+                    </td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+
+            <tr class="total">
+                <td colspan="4"></td>
+                <td>總價格:${{ cart.get_total_price }}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="text-right continue">
+        <a href="/"><input type="button" value="繼續購買"></a>
+        <form action="{% url 'cart:order_create' %}" style="display: inline;" method="post">
+            {% csrf_token %}
+            <input type="submit" value="結帳">
+        </form>
+    </div>
+{% endblock %}

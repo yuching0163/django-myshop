@@ -1,0 +1,41 @@
+{% extends 'shop/base.html' %}
+
+{% load static %}
+
+{% block title %}
+    我的帳戶
+{% endblock %}
+
+{% block content %}
+        {% if request.user.is_authenticated %}
+            <h2>{{request.user}}的購買紀錄</h2>
+            <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>產品名稱</th>
+            <th>單元售價</th>
+            <th>數量</th>
+            <th>總價</th>
+            <th>時間</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in purchaser %}
+                <tr>
+                    <td>{{ item.product }}</td>
+                    <td>${{ item.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.total }}</td>
+                    <td>{{ item.created }}</td>
+                </tr>
+        {% endfor %}
+
+            </tbody>
+        </table>
+
+        {% else %}
+            <h2>您尚未登入! <a href="/account/">登入</a></h2>
+        {% endif %}
+
+
+{% endblock %}
